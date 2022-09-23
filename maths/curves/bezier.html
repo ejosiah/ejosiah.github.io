@@ -1,0 +1,71 @@
+<html>
+	<head>
+		<title>B&eacute;zier Curves</title>
+		<link rel="stylesheet" type="text/css" href="../../style/main.css" />
+		<script type="text/x-mathjax-config">
+  			MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+		</script>
+		<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+		<script src="../../js/bezier.js"></script>
+	</head>
+	<body>
+		<article id="main">
+			<h1>B&eacute;zier Curves</h1>
+			<div>
+				<h2>Linear B&eacute;zier Curves</h2>
+				<p>Let’s start with the simplest case, where there are only two control points P0 and P1.</p>
+				<canvas id="linear-bezier" width="200" height="200">
+					Linear bezier Image
+				</canvas>
+				<p>The B&eacute;zier curve c approximating P0 and P1 is, simply, the straight line segment joining the two. We write the parametric equation of c as follows:</p>
+				<p class="block-formula">$c(u) = (1 - u)P_{0} + uP_{1}$ <span class="inline">$(0 \leq u \leq 1)$</span><span class="inline">(1)</span></p>
+				<p>The parametric equation (1.0) can be written as</p>
+				<p class="block-formula">$c(u) = B_{0,1}(u)P_{0} + B_{1,1}(u)P_{1}$ <span class="inline">$(0 \leq u \leq 1)$</span><span class="inline">(2)</span></p>
+				<p>where 1 - u (of the first control point) and u (of the second control point)  are know as the <span class="highlight_it">Bernstein polynomials</span> of degree 1. They are denoted by $B_{0,1}$ and $B_{1,1}$</p>
+			</div>
+			<div>
+				<h2>Quadratic B&eacute;zier curves</h2>
+				<p>
+
+					Consider next three control points P0, P1 and P2. We want to construct the B&eacute;zier curve approximating these control points by means of a process of linear interpolation. Is there, though, an evident way to linearly interpolate a curve between three control points "simultaneously"? What does this even mean?
+					A possibility, of course, is to linearly interpolate between P0 and P1 and then between P1 and P2, to get the two-segment polyline P0P1P2, which is not particularly attractive because of the corner at P1 (see Figure 15.3(a)). De Casteljau’s method, however, succeeds by adding a third interpolation step to "amalgamate" the two segments P0P1 and P1P2, smoothening thereby the corner. Here’s how it works.
+				</p>
+				<p id="quad-bezier">
+					<canvas id="quad-bezier1" width="200" height="200"></canvas>
+					<canvas id="quad-bezier2" width="200" height="200"></canvas>
+					<!--canvas id="quad-bezier3" width="200" height="200"></canvas-->
+				</p>
+				<p>(a) An "unhappy" way of approximating three control points (b) c(u) describes a B&eacute;zier curve of degree 2 interpolating $P_{0}$, $P_{1}$ and $P_{2}$ after a "triple" interpolation (c) Bernstein polynomials of degree 2: $B_{0,2}(u) = (1 - u)^{2}$, $B_{1,2}(u) = 2(1 - u)u$, $B_{2,2}(u) = u^{2}$</p>
+				<p>Given a u, $0 \leq u \leq 1$</p>
+				<ol>
+					<li>First interpolate between $P_{0}$ and $P_{1}$ to find the point
+						<ul><li>$a(u) = (1 - u)P_{0} + uP_{1}$</li></ul>
+					</li>
+					<li>Next interpolate between $P_{1}$ and $P_{2}$ to find the point
+						<ul><li>$b(u) = (1 - u)P_{1} + uP_{2}$</li></ul>
+					</li>
+					<li>Finally interpolate between a(u) and  to determine the point
+						<ul><li>$c(u) = (1 - u)a(u) + ub(u)$</li></ul>
+					</li>
+				</ol>
+				<p>Substituting the expressions for a(u) and b(u) into that for c(u), one obtains the parametric equation for a curve c:</p>
+				<p class="block-formula">$c(u) = (1 - u)^{2}P_{0} + 2(1 - u)uP_{1} + u^{2}P_{2}$ <span class="inline">$(0 \leq u \leq 1)$</span><span class="inline">(3)</span></p>
+				<p>The parametric equation (3) can be rewritten using the Bernstein polynomials of degree 2 as:</p>
+				<p class="block-formula">$c(u) = B_{0,2}(u)P_{0} + B_{1,2}(u)P_{1} + B_{2,2}(u)P_{2}$ <span class="inline">$(0 \leq u \leq 1)$</span><span class="inline">(4)</span></p>
+			</div>
+			<div>
+				<h2>General B&eacute;zier Curves</h2>
+				<p>The parametric equation for a B&eacute;zier curve c approximating n+1 controll points $P_{0}$, $P_{1}$, ...,$P_{n}$ is: </p>
+				<p class="block-formula">$c(u) = \sum_{i=0}^nB_{i,n}(u)P_{i}$<span class="inline">$(0 \leq u \leq 1)$</span><span class="inline">(4)</span></p>
+				<p>where $B_{i,n}(u)$, $(0 \leq i \leq n)$, called the ith <span class="highlight_it">Bernstein polynomials</span> of degree n is given by</p>
+				<p class="block-formula">$\binom{n}{i}(1 - u)^{n-i}u^{i}$<span class="inline">(5)</span></p>
+				<p>where $\binom{n}{i} = \frac{n!}{(n - i)!i!}$ is a binomial coefficient. The curve c is called a curve of degree n, or order n + 1</p>
+			</div>
+			<div>
+				<h2>B&eacute;zier Surfaces</h2>
+				<p>The parametric equation for a B&eacute;zier surface s approximating $(n + 1) \times (m + 1)$ array of control points is:</p>
+				<p class="block-formula">$s(u, v) = \sum_{i=0}^n\sum_{j=0}^mB_{i,n}(u)B_{j,m}(v)P_{i,j}$ <span class="inline">$(0 \leq u \leq 1, 0 \leq v \leq 1)$</span><span class="inline">(6)</span></p>
+			</div>
+		</article>
+	</body>
+</html>

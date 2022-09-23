@@ -1,0 +1,52 @@
+a{
+    color: black;
+}
+
+.block-formula{
+    text-align: center;
+}
+
+.block-formula span.inline{
+    padding-left: 30px;
+}
+
+.inline-formula{
+    padding-right: 0.5em;
+}
+
+.comment{
+    font-style: italic;
+    color: green;
+}
+
+.algorithm p{
+
+}
+
+.highlight_it{
+    font-weight: bold;
+    font-style: italic;
+}
+
+.highlight{
+    font-weight: bold;
+}
+
+canvas{
+    padding-right: 100px;
+    padding-left: 50px;
+}
+
+#main{
+    width: 40%;
+    margin: auto;
+    padding: 2em;
+    text-align: left;
+    border: 1px solid black;
+    background-color: white;
+}
+
+body{
+    background-color: cadetblue;
+    text-align: center;
+}

@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <title>Pi checker</title>
+        <style>
+            #result .err{
+                color: red;
+            }
+            #result .exp{
+                color: greenyellow;
+            }
+            #result div{
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: x-large;
+                font-weight: bold;
+                text-align: center;
+            }
+        </style>
+        <script>
+            window.PI = "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679";
+            window.onload = function(){
+                document.getElementById('checker').onsubmit = function(){
+                    var pi = document.getElementById('user_pi').value;
+
+                    var errors = []
+                    for(var i = 0; i < pi.length; i++){
+                        if(pi[i] == PI[i]){
+                            errors.push(0);
+                        }else{
+                            errors.push(1);
+                        }
+                    }
+                    
+                    var actual = "";
+                    var expected = "";
+                    for(i = 0; i < pi.length; i++){
+                        if(errors[i] === 1){
+                            actual += "<span class='err'>" + pi[i] + "</span>"
+                            expected += "<span class='exp'>" + PI[i] + "</span>"
+                        }else{
+                            actual += "<span>" + pi[i] + "</span>"
+                            expected += "<span>" + PI[i] + "</span>"
+                        }
+                        
+                    }
+                    let result = document.getElementById("result");
+                    console.log(expected);
+                    
+                    result.innerHTML = "<div>" + actual + "</div>";
+                    
+                    let hasErrors = errors.reduce((acc, val) => acc + val) > 0;
+                    if(hasErrors){
+                        result.innerHTML += "<div>" + expected + "</div>";
+                    }
+
+                    return false;
+                };
+                document.getElementById("clear").onclick = function(){
+                    document.getElementById('user_pi').value = "";
+                    document.getElementById("result").innerHTML = ""
+                    return false;
+                }
+
+            };
+        </script>
+    </head>
+    <body>
+        <h1>&pi; checker</h1>
+        <p>input &pi; to however many decimal places, press check to confirm</p>
+        <form id="checker" autocomplete="off">
+            <input id="user_pi" type="text" size="50" />
+            <input type="submit" value="check" />
+            <input type="submit" value="clear" id="clear" />
+            <!-- <div>
+               <input type="checkbox" id="two_pi"/> <label>2&Pi;</label>
+            </div> -->
+        </form>
+        <div id="result">
+
+        </div>
+    </body>
+</html>

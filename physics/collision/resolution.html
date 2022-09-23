@@ -1,0 +1,62 @@
+<html>
+<head>
+    <title>Hard Constraints</title>
+    <link rel="stylesheet" type="text/css" href="../../style/main.css" />
+    <script type="text/x-mathjax-config">
+  			MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+	</script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</head>
+<body>
+    <article id="main">
+        <h1>Hard Constraints</h1>
+        <h2>Simple Collision Resolution</h2>
+        <article>
+            <h3>The Closing Velocity</h3>
+            <p>The closing velocity is the total speed at which two objects are moving together. Two objects that are moving apart from one another will have a closing velocity that is less than zero.</p>
+            <p class="block-formula">$\nu_{c} = \dot{P_{a}} \cdot \hat{(P_{b} - P_{a})} + \dot{P_{b}} \cdot \hat{(P_{a} - P_{b})}$</p>
+            <p>where $\nu_{c}$ is closing velocity (a scala quantity), $P_{a}$ and $P_{b}$ are the positions of objects a and b and $\hat{P}$ is the unit length vector in the same direction as p. This can be simplified to give</p>
+            <p class="block-formula">$\nu_{c} = -(\dot{P_{a}} - \dot{P_{b}}) \cdot \hat{(P_{a} - P_{b})}$</span><span class="inline">[1]</span><p>
+            </p>Two objects that are closing in on one another will have a negative relative velocity and objects that are separating will have a positive velocity. Mathematically, this is simply a matter of changing the sign of Equation 1 to give</p>
+            <p class="block-formula">$\nu_{s} = (\dot{P_{a}} - \dot{P_{b}}) \cdot \hat{(P_{a} - P_{b})}$</span><span class="inline">[2]</span><p>
+            <p>where $\nu_{s}$ is the separating velocity</p>
+        </article>
+        <article>
+            <h3>The Coefficient of Restitution</h3>
+            <p>The spring model assumes that momentum (the product of mass and velocity) is conserved during the collision as in</p>
+            <p class="block-formula">$m_{a}\dot{P_{a}} + m_{b}\dot{P_{b}}$ = $m_{a}\dot{P'_{a}} + m_{b}\dot{P'_{b}}$ </span><span class="inline">[3]</span></p>
+            <p>where $m_{a}$ is the mass of object a; $\dot{P_{a}}$ is the velocity of object a before the collision , and $\dot{P'_{a}}$ is the velocity after the collision</p>
+            <p>Equation 3 tells us about the total velocity before and after the collision, but it doesn't tell us about the individual velocities of each object. The individual velocities are linked together using the closing velocity, according to the equation</p>
+            <p class="block-formula">$\nu_{s}' = - c\nu_{s}$</p>
+            <p>where $\nu_{s}'$ is the separating velocity after the collision and $\nu_{s}$ is the separating velocity before the collision and <b><i>c</i></b> is a constant called the coefficient of restitution. </p>
+            <p>The coefficient of restitution controls the speed at which the objects will separate after colliding. It depends on the materials that are in collision. If the coefficient is 1, then the objects will bounce apart with the same speed as they were closing. If the coefficient is zero, then the objects will coalesce and travel together</p>
+        </article>
+        <article>
+            <h3>The Collision Direction and the Contact Normal</h3>
+            <p>In cases where we have two particles colliding, then the contact normal will always be given by</p>
+            <p class="block-formula">$\hat{n} = \hat{(P_{a} - P_{b})}$</p>
+            <p>By convention, we always give the contact normal from object <i>a</i>'s perspective. In this case, from <i>a</i>'s perspective the contact is incoming from b, To give the direction of collision from <i>b</i>'s point of view, we could simply multiply by -1.</p>
+            <p>When a particle is colliding with the ground, we only have an object a and no object b. In this case from object as perspective, the contact normal will be</p>
+            <p class="block-formula">$\hat{n} = \left[ \begin{array}{cc} 0 \\1 \\0 \end{array} \right]$</p>
+            <p>assuming that the ground is level at the point of collision</p>
+            <p>With the correct contact normal, Equation 2 becomes</p>
+            <p class="block-formula">$\nu_{s} = (\dot{P_{a}} - \dot{P_{b}}) \cdot \hat{n}$</span><span class="inline">[2]</span><p>
+        </article>
+        <article>
+            <h3>Impulses</h3>
+            <p>Recall that applying a force changes the acceleration of an object. If we instantly change the force, the acceleration instantly changes too. We can think of acting on an object to change its velocity in a similar way. Rather than a force, this is called <i>impulse</i>, an instantaneous change in velocity. In the same way as we have</p>
+            <p class="block-formula">$f = m\ddot{p}$</span><span class="inline">[5]</span></p>
+            <p>for forces, we have:</p>
+            <p class="block-formula">$g = m\dot{p}$</span><span class="inline">[6]</span></p>
+            <p>for impulses</p>
+            <p>We will apply impulses as they arise during the collision resolution process. Each will be applied one at a time using the equation:</p>
+            <p class="block-formula">$\dot{P}' = \dot{P} + \frac{1}{m}g$</p>
+            <p>The result of our collision resolution will be an impluse to apply to each object. The impluse will be immediately applied and will instantly changed the velocity of the object</p>
+            <p>There is one more important result to note about impulses before we move on to using them in collision resolution, and it is best seen using a technique called "dimensional analysis" If we fill in the units for Equation 5, we might put the mass m in kilograms and the velocity in meters per second. so that force is measured in $kg m s^{-2}$. This unit is called a Newton (N). Doing the same with Equation 6 give a unit of $kg ms^{-1}$. We can write this in terms of Newtons in this way:</p>
+            <p class="block-formula">$kgms^{-1} = kgms^{-2} \times s = Ns$</p>
+            <p>So, impluses are measured in units of force multiplied by time. Or put another way, 1Ns of impluse is equivalent to 1N of force applied for 1s. We can use this result to convert between forces and impulses: an impluse can always be represented as a force applied for some specific length of time as in</p>
+            <p class="block-formula">$g = ft$</p>
+        </article>
+    </article>
+</body>
+</html>

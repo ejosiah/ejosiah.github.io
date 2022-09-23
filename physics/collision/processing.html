@@ -1,0 +1,74 @@
+<html>
+<head>
+    <title>Hard Constraints - Collision Processing</title>
+    <link rel="stylesheet" type="text/css" href="../../style/main.css" />
+    <script type="text/x-mathjax-config">
+  			MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+	</script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</head>
+<body>
+<article id="main">
+    <h1>Hard Constraints</h1>
+    <article>
+    <h2>Collision processing</h2>
+
+        <div class="algorithm">
+            <h3>Contact resolution summary</h3>
+            <div>
+                <h4>resolve velocity</h4>
+                <p><span class="inline-formula">$\nu_{s} = (\dot{P_{a}} - \dot{P_{b}}) \cdot \hat{n}$</span><span class="comment">calculate initial separating velocity</span> </p>
+                <p><span class="inline-formula">if $\nu_{s} > 0$</span> return; <span class="comment">// particles are not colliding</span></p>
+                <p><span class="inline-formula">$\nu_{s}' = -c\nu_{s}$</span><span class="comment"> // calculate separating velocity after collision</span></p>
+                <p><span class="inline-formula">$\mu_{c} = (\ddot{P_{a}} - \ddot{P_{b}}) \cdot \hat{n} \times t$</span> <span class="comment"> // Check velocity build up due to acceleration</span></p>
+                <p><span class="inline-formula">$\nu_{s}' = \nu_{s}' + c \mu_{c}$</span>, if <span class="inline-formula">$\mu_{c} < 0$</span> <span class="comment"> //  note <span class="inline-formula">$\nu_{s}'$</span>must be >= 0 after removing velocity build up due to acceleration</span></p>
+                <p><span class="inline-formula">$\Delta \nu_{s} = \nu_{s}' - \nu_{s}$</span><span class="comment">calculate new separating velocity</span> </p>
+                <p><span class="inline-formula">if $\sum\frac{1}{m} <= 0$</span> return  <span class="comment">// exit if inverse mass is less than zero</span></p>
+                <p><span class="inline-formula">$g = \Delta \nu_{s} \times \sum \frac{1}{m}$</span> <span class="comment">// calculate scala impulse</span></p>
+                <p><span class="inline-formula">$ G = \hat{n} \times g$</span>  <span class="comment">// calculate impulse vector</span></p>
+                <p><span class="inline-formula">$ \dot{P_{a}}' = \dot{P_{a}} + \frac{1}{m} G $</span>  <span class="comment">// apply impulse for particle a</span></p>
+                <p><span class="inline-formula">$ \dot{P_{b}}' = \dot{P_{b}} - \frac{1}{m} G $</span>  <span class="comment">// apply impulse for particle b</span></p>
+            </div>
+            <div>
+                <h4>resolve interpenetration</h4>
+                <span class="comment">// TODO implementation</span>
+            </div>
+        </div>
+    </article>
+    <article>
+        <h2>Collision Detection</h2>
+        <article>
+            <h3>Resolving Interpenetration</h3>
+            <p>When two object are interpenetrating we will move them apart just enough to separate them.</p>
+            <p>The total motion of each object is equal to the depth of interpenetration</p>
+            <p class="block-formula">$\Delta p_{a} + \Delta p_{b} = d$</p>
+            <p>where <span>$\Delta P_{a}$</span> is the scalar distance that object a will be moved. The two distances are related to each other according to the ratio of their masses</p>
+            <p class="block-formula">$m_{a} \Delta p_{a} = m_{b} \Delta p_{b}$</p>
+            <p>which combines to give</p>
+            <p class="block-formula">$\Delta p_{a} = \frac{m_{b}}{m_{a} + m_{b}} d$</p>
+            <p>and</p>
+            <p class="block-formula">$\Delta p_{b} = \frac{m_{a}}{m_{a} + m_{b}} d$</p>
+            <p>Combining these with the direction from the contact normal, we get a total change in the vector position of</p>
+            <p class="block-formula">$\Delta P_{a} = \frac{m_{b}}{m_{a} + m_{b}} dn$</p>
+            <p>and</p>
+            <p class="block-formula">$\Delta P_{b} = -\frac{m_{a}}{m_{a} + m_{b}} dn$</p>
+            <p>where <b><i>n</i></b> is the contact normal</p>
+        </article>
+        <article>
+            <h3>Resting Contact</h3>
+            <p>A particle resting on the ground, experiences only one force, gravity. The contact resolver looks at the particle and sees that it has a penetrating velocity of </p>
+            <p class="block-formula">$\dot{P} = 2 \ddot{P} t$</p>
+            <p>Applying the collision response, the particle is given a velocity of </p>
+            <p class="block-formula">$\dot{P}' = c \dot{p} = c 2 \ddot{P} t$</p>
+            <p>this moves the particle out of interpenetration. it gets an upward velocity, which will carry it off the ground. The upward velocity will only be small, but it may be enough to be noticed</p>
+            <h4>Velocity and the Contact Normal</h4>
+            <p>When we have two objects in resting contact, we are interested in their relative velocity rather than the absolute velocity of either. The two objects might be in resting contact with one another in one direction, but moving across each other in another direction</p>
+            <p>To cope with this situation, the velocity and acceleration calculations are all performed in the direction of the contact normal only. We first find the velocity in this direction and test to see whether it could have been solely caused by the component of the acceleration in the same direction. If so then the velocity is changed so there is no separating or closing velocity in this direction</p>
+            <p class="block-formula">$\mu_{c} = (\ddot{P_{a}} - \ddot{P_{b}}) \cdot \hat{n} \times t$</p>
+            <p>where $\mu_{s}$ is closing velocity due to acceleration and $t$ is time</p>
+            <p>if we have got a closing velocity due to acceleration build up, remove it from the separating velocity</p>
+        </article>
+    </article>
+</article>
+</body>
+</html>

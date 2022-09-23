@@ -1,0 +1,104 @@
+<html>
+	<head>
+		<title>Smooth Particle Hydrodynamics</title>
+		<link rel="stylesheet" type="text/css" href="../../style/main.css" />
+		<script type="text/x-mathjax-config">
+  			MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+		</script>
+		<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+	</head>
+	<body>
+		<article id="main">
+            <h1>Smoothed Particle Hydrodynamics</h1>
+			<div>
+				<h2>Kernel</h2>
+				<p>SPH defines "smoothness" using a function called a "kernel". When a particle position is given, the kernel function spreads out any values stored in a the particle nearby,
+					starting from the center point of the particle, the function fades out to zero as the distance from the center reaches the kernel radius.
+				</p>
+				<p class="block-formula">
+					$\displaystyle W_{std(r)} = \frac{315}{64{\pi}h^3} \left\{ \begin{array}{lr} (1 - \frac{r^2}{h^2})^2 & 0 \leq r \leq h \\ 0 & otherwise \end{array}  \right.$
+				</p>
+				<p>A valid kernel function should integrate to 1</p>
+				<p class="block-formula">
+					$\displaystyle \int W(r) = 1$
+				</p>
+			</div>
+			<div>
+				<h2>Interpolation</h2>
+				<p>The basic idea of SPH Interpolation is to measture any physical quantities at any given location by looking up the nearby particles.</p>
+				<p class="block-formula">
+					$\displaystyle \phi(x) = m\sum_{j} \frac{\phi_{j}}{\rho_{j}}W(x - x_j) $
+				</p>
+				<p> where <span class="inline-formula">$x, m, \phi, \rho$</span> and <span class="inline-formula">$W(r)$</span> are location for the Interpolation, mass, quantity that we want to interpolate, 
+					density and kernel function, respectively. Subscript <span class="inline">$j$</span> represents the <span class="inline-formula">$j$th</span> neighbouring particle</p>
+			</div>
+			<div>
+				<h2>Density</h2>
+				<p>From the interpolation equation above density is required to calculate any required qauntity, to calculate density we use the interpolation equation to get:</p>
+				<p class="block-formula">$\displaystyle \rho(x) = m\sum_{j} W(x - x_j) $</p>
+			</div>
+			<div>
+				<h2>Differential Operators</h2>
+				<p>We now have the basic tools to perform mathematical computation in the SPH world. To compute fluid dynamics, however we need the differential operators</p>
+				<div>
+					<h3>Gradient</h3>
+					<p class="block-formula">$\displaystyle \nabla\phi(x) =  m \sum_{j} \frac{\phi_{j}}{\rho_{j}} \nabla{W(|x - x_{j}|)}$</p>
+					<p>This implementation of the gradient, however, is not symmetric. It means the gradient calculated from two nearby particles with respect to each other can be different.
+						The implementation below resolve the symmetry problem
+					</p>
+					<p class="block-formula">$\displaystyle \nabla\phi(x) = \rho_{i} m \sum_{j} \left( \frac{\phi_{i}}{\rho_{i}^2} + \frac{\phi_{j}}{\rho_{j}^2} \right) \nabla{W(|x - x_{j}|)}$</p>
+				</div>
+				<div>
+					<h3>Laplacian</h3>
+					<p class="block-formula">$\displaystyle \nabla^2 \phi{(x)} = m \sum_{j} \left( \frac{\phi_{j} - \phi_{i}}{\rho_{j}} \right) \nabla^2 W(x - x_{j})$</p>
+				</div>
+			</div>
+			<div>
+				<h2>Dynamics</h2>
+				<div>The pressure gradient, viscosity and gravity forces are the key components for implementing a fluid solver. The presure gradient force results in fluid flow from higher to lower pressure area
+					and viscosity defines how think the fluid is.
+					<p class="block-formula">
+						$\displaystyle \mathbf{a} = \mathbf{g} - \frac{\nabla{p}}{\rho} + \mu \nabla^2 v$
+					</p>
+					<p>SPH simulator takes the following steps:
+						<ol>
+							<li>Measure the density with particles' current position</li>
+							<li>Compute the pressure based on the density</li>
+							<li>Compute the presure gradient force</li>
+							<li>Compute the viscosity force</li>
+							<li>Compute the gravity and other external forces</li>
+							<li>Peform time integration</li>
+						</ol>
+					</p>
+					<div>
+						<h3>Pressure Gradient Force</h3>
+						<p>Pressure is highly related to density - higer density generates higer pressure. to calculate pressure we are going to need to use the Equation of state</i></p>
+						<div>
+							<h4>Equation of State</h4>
+							<p>The equation of state or EOS, describes the relationship between state variables. In this case, we need to map density to pressure</p>
+							<p class="block-formula">$\displaystyle p = \frac{\kappa}{\gamma} \left( \frac{\rho}{\rho_{0}} - 1 \right)^\gamma $</p>
+							<p>Here $p$ is pressure, $\kappa$ is eosScale, $\gamma$ is eosExponent, $\rho$ is density, and $\rho_{0}$ is targetDensity</p>
+							<p>eosScale can be calculated using the formula below:</p>
+							<p class="block-formula">$\displaystyle \kappa = \rho_{0} \frac{c_{s}}{\gamma}$</p>
+							<p>where $c_{s}$ is speed of sound in the fluid.</p>
+						</div>
+						<div>
+							<h4>Computing Pressure Gradient</h4>
+							<p>To compute the pressure gradient, we can use the symmetric version of the gradient equation</p>
+							<p class="block-formula">$\displaystyle \mathbf{f}_{p} = -m \frac{\nabla{p}}{\rho}$</p>
+							<p>we can apply the symmetric gradient operator to get</p>
+							<p class="block-formula">$\displaystyle \mathbf{f}_{p}  =  -m^2 \sum_{j} \left( \frac{p_{i}}{\rho_{i}^2} + \frac{p_{j}}{\rho_{j}^2} \right) \nabla{W(x - x_{j})}$</p>
+						</div>
+					</div>
+					<div>
+						<h3>Viscosity</h3>
+						<p>The equation for the viscosity force can be written as:</p>
+						<p class="block-formula">$\displaystyle \mathbf{f}_{\upsilon} = m \mu \nabla^2 \mathbf{u}$</p>
+						<p>based on the Laplacian operator the equation above can be rewritten as:</p>
+						<p class="block-formula">$\displaystyle \mathbf{f}_{\upsilon}(x) = m^2 \mu \sum_{j} \left( \frac{u_{j} - u_{i}}{\rho_{j}} \right) \nabla^2 W(x - x_{j})$</p>
+					</div>
+				</div>
+			</div>
+		</article>
+	</body>
+</html>

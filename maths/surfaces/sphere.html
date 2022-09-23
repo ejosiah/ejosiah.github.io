@@ -1,0 +1,100 @@
+<html>
+	<head>
+		<title>Sphere</title>
+		<link rel="stylesheet" type="text/css" href="../../style/main.css" />
+		<script type="text/x-mathjax-config">
+  			MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+		</script>
+		<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+		<script src="../../js/bezier.js"></script>
+	</head>
+	<body>
+		<article id="main">
+			<h1>Sphere</h1>
+            <div>
+                <h2>Parametric Equation</h2>
+                <p>The parametric specification for a sphere consists of the three equations</p>
+                <p class="block-formula">$x = r  \cos\theta \sin\phi$
+                    <span class="inline"> $y = r  cos\phi$</span>,
+                    <span class="inline">$z = r  \sin\theta sin\phi$</span>
+                </p>
+                <p>
+                    <span class="inline"> where $(\theta, \phi) \in W$,</span>
+                    <span class="inline">$r$ is radius of the sphere</span>
+                </p>
+                <p>The parameter space $W$ being a subset of the plane $\mathbb{R}^{2}$</p>
+            </div>
+            <div>
+                <h1>Normals</h1>
+                <p>We shall now proceed with deriving the normals for points $p(x, y, z)$ of the above parametric equation.</p>
+                <p>Normals for parametric surfaces are computed by the equation below:</p>
+                <p class="block-formula">$\Large{\hat{n} = 
+                    \frac{\frac{\partial{P}}{\partial{\theta}} \times \frac{\partial{P}}{\partial{\phi}}}{|\frac{\partial{P}}{\partial{\theta}} \times \frac{\partial{P}}{\partial{\phi}}|}
+                }$</p>
+                <p>so</p>
+                <p class="block-formula">
+                    $\frac{\partial{x}}{\partial{\phi}} = -r\sin\theta\sin\phi$,
+                    <span class="inline">$\frac{\partial{z}}{\partial{\phi}} = 0$</span>                  
+                    <span class="inline">$\frac{\partial{y}}{\partial{\phi}} = r\cos\theta\sin\phi$</span>
+                </p>
+                <p>and</p>
+                <p class="block-formula">
+                    $\frac{\partial{x}}{\partial{\theta}} = r\cos\theta\cos\phi$,
+                    <span class="inline">$\frac{\partial{z}}{\partial{\theta}} = -r\sin\phi$</span>
+                    <span class="inline">$\frac{\partial{y}}{\partial{\theta}} = r\sin\theta\cos\phi$</span>
+                </p>
+                <p>haven found the partial deriviatives above we will now apply cross product on them to find the normal we get</p>
+                <p class="block-formula">
+                    $nx = r^2\cos\theta\sin^2\phi$
+                    <span class="inline">$ny = r^2\sin^2\theta\cos\phi\sin\phi + r^2\cos^2\theta\cos\phi\sin\phi$</span>
+                    <span class="inline">$nz = r^2\sin\theta\sin^2\phi$</span>
+                </p>
+                <p>Lets try to simplify $ny$ by extracting common terms:</p>
+                <p class="block-formula">
+                    $ny = r^2\cos\phi\sin\phi(\sin^2\theta + 2\cos^2\theta)$ 
+                </p>
+                <p>We know from trig identites that $(\sin^2\theta + 2\cos^2\theta) = 1$ therefore:</p>
+                <p class="block-formula">
+                    $ny = r^2\cos\phi\sin\phi$ 
+                </p>
+                <p>We have found $n$ we now need to find $\hat{n}$ which can be found by dividing $n$ by its magnitude $|n|$</p>
+                <p class="block-formula">
+                    $|n| = \sqrt{(r^2\cos\theta\sin^2\phi)^2 + (r^2\cos\phi\sin\phi)^2 +  (r^2\sin\theta\sin^2\phi)^2}$
+                </p>
+                <p class="block-formula">
+                    $\sqrt{r^4\cos^2\theta\sin^4\phi + r^4\cos^2\phi\sin^2\phi + r^4\sin^2\theta\sin^4\phi}$
+                </p>
+                <p class="block-formula">
+                    $\sqrt{r^4(\cos^2\theta\sin^4\phi + \cos^2\phi\sin^2\phi + \sin^2\theta\sin^4\phi)}$
+                </p>
+                <p class="block-formula">
+                    $\sqrt{r^4((\cos^2\theta\ + \sin^2\theta)sin^4\phi + \cos^2\phi\sin^2\phi)}$
+                </p>
+                <p class="block-formula">
+                    $\sqrt{r^4(sin^4\phi + \cos^2\phi\sin^2\phi)}$
+                </p>
+                <p class="block-formula">
+                    $\sqrt{r^4\sin^2\phi(sin^2\phi + \cos^2\phi)}$
+                </p>
+                <p class="block-formula">
+                    $\sqrt{r^4\sin^2\phi}$
+                </p>
+                <p class="block-formula">
+                    $r^2\sin\phi$
+                </p>
+                <p>we have found the magnitude of $n$ to be $r^2\sin\phi$, now we need to divide $n$ by it to get $\hat{n}$</p>
+                <p class="block-formula">
+                    $\hat{nx} = \frac{r^2\cos\theta\sin^2\phi}{r^2\sin\phi}$
+                    <span class="inline">$\hat{ny} = \frac{r^2\cos\phi\sin\phi}{r^2\sin\phi}$ </span>
+                    <span class="inline">$\hat{nz} = \frac{r^2\sin\theta\sin^2\phi}{r^2\sin\phi}$</span>
+                </p>
+                <p class="block-formula">
+                    $\hat{nx} = \cos\theta\sin\phi$
+                    <span class="inline">$\hat{ny} = \cos\phi$</span>
+                    <span class="inline">$\hat{nz} = \sin\theta\sin\phi$</span>
+                </p>
+                <p>Turns out that the normal of a point on a sphere of any radius is the same point on a unit sphere  &#128521;</p>
+            </div>
+		</article>
+	</body>
+</html>

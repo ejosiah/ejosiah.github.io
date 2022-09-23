@@ -1,0 +1,41 @@
+<html>
+	<head>
+		<title>Cloth</title>
+		<link rel="stylesheet" type="text/css" href="../style/main.css" />
+		<script type="text/x-mathjax-config">
+  			MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+		</script>
+		<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+	</head>
+	<body>
+		<article id="main">
+			<h1>Cloth</h1>
+            <div>
+            <h2>Internal Forces for a Cloth Particle</h2>
+            <p>A particle of mass m at a point $\mathbf{P}$ connected to another particle at the point $\mathbf{Q}$ experiences the forces:</p>
+            <p class="block-formula">
+                $\large{\mathbf{F}_{spring} = k_{spring}(\|\mathbf{Q} - \mathbf{P}\| - d)\frac{\mathbf{Q} - \mathbf{P}}{\|\mathbf{Q} - \mathbf{P}\|}}$
+            </p>
+            <p>and</p>
+            <p class="block-formula">
+                $\large{\mathbf{F}_{damper} = k_{damper}(\frac{d\mathbf{Q}}{dt} - \frac{d\mathbf{P}}{dt})}$
+            </p>
+            <p>where $d$ is the rest length of the spring connecting them</p>
+        </div>
+        <div>
+            <h2>External Forces for a Cloth Particle</h2>
+            <p>A particle of mass m having a velocity $\mathbf{V}$ experiences the force</p>
+            <p class="block-formula">
+                $\large{\mathbf{F}_{extern} = m\mathbf{g} + k_{wind}|(\mathbf{W} - \mathbf{V})\cdot\mathbf{N}|}$
+            </p>
+            <p>where $\mathbf{g}$ is the acceleration of gravity, $\mathbf{W}$ is the velocity of the wind, and $\mathbf{N}$ is the surface normal at the particle's location</p>
+        </div>
+        <div>
+            <h2>Summary</h2>
+            <p class="block-formula">
+                $\large{\mathbf{f} = \frac{\mathbf{X}_{j} - \mathbf{X}_{i}}{|\mathbf{X}_{j} - \mathbf{X}_{i}|}[k_{s}(|\mathbf{X}_{j} - \mathbf{X}_{i}| - l_{0}) + k_{d}(\mathbf{V}_{j} - \mathbf{V}_{i})\cdot\frac{\mathbf{X}_{j} - \mathbf{X}_{i}}{|\mathbf{X}_{j} - \mathbf{X}_{i}|}]}$
+            </p>
+        </div>
+		</article>
+	</body>
+</html>
