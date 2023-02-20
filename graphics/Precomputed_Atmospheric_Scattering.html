@@ -1,0 +1,63 @@
+<html>
+	<head>
+		<title>Precomputed Atmospheric Scattering</title>
+		<link rel="stylesheet" type="text/css" href="../../style/main.css" />
+		<script type="text/x-mathjax-config">
+  			MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+		</script>
+		<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+	</head>
+	<body>
+		<article id="main">
+            <h1>Precomputed Atmospheric Scattering</h1>
+            <section>
+                <h2>2.1. Physical model</h2>
+                <p>The physical model commonly used in CG is a clear sky model based on two constituents, air molecules and aerosol particles, in a thin spherical layer of decreasing density between $R_g = 6360 km$ and $R_t = 6420 km$</p>
+                <p>At each point, the proportion of light that is scattered $\theta$ degrees away from its incident direction is given by the product of a scattering coefficient $\beta^s$ and of a phase function $P$.
+                    $\beta^s$ depends on the particle density and P describes the angular dependency. For air molecules $\beta^s$ and $P$ are given by the Rayleigh theory.
+                </p>
+                <p class="block-formula">
+                    ${\large{\displaystyle \beta^s_R(h, \lambda) = \frac{8\pi(n^2 - 1)^2}{3N\lambda^4}e^{-\frac{h}{H_R}}}}$<span class ="inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="inline">(1)</span>
+                </p>
+                <p class="block-formula">
+                    ${\large{\displaystyle P_R(\mu) = \frac{3}{16\pi}(1 + \mu^2)}}$<span class="inline">where $\mu = cos\theta$</span><span class="inline">(2)</span>
+                </p>
+                <p>
+                    <ul>
+                        <li>where $h = r - R_g$ is altitude</li>
+                        <li>$\lambda$ the wavelength</li>
+                        <li>$n$ is index of refraction of air</li>
+                        <li>$N$ the molecular density at sea level $R_g$</li>
+                        <li>and $H_R = 8km$ is the thickness of the atmopshere if its density where uniform.</li>
+                    </ul>
+                </p>
+                <p>we use $\beta^s_R = (5.8, 13.5, 33.1) * 10^{-6}m^{-1}$ for $\lambda = (680, 550, 440) nm$</p>
+                <p>
+                    Aerosols also have an exponentially decreasing density with a smaller heigth scale $H_M \backsimeq 1.2km$. There phase function is giving by the Mie theory, approximated with the Cornette Shank phase function:
+                </p>
+                <p class="block-formula">
+                    ${\large{\displaystyle \beta^s_M(h, \lambda) = \beta^s_M(0, \lambda)e^{-\frac{h}{H_M}}}}$ <span class="inline">(3)</span>
+                </p>
+                <p class="block-formula">
+                    ${\large{\displaystyle P_M(\mu) = \frac{3}{8\pi}\frac{(1 - g^2)(1 + \mu^2)}{2+g^2}(1 + g^2 - 2g\mu)^{3/2}}}$ <span class="inline">(4)</span>
+                </p>
+                <p>
+                    Unline air molecules, aerosols absorb a fraction of the incident light. It is measured with an absorption coefficient $\beta^a_M$ which gives the extinction coefficient 
+                    $\beta^e_R = \beta^s_M + \beta^a_M$
+                </p>
+            </section>
+            <section>
+                <h2>2.2. Rendering equation</h2>
+                <p>
+                    We recall here the rendering equation in a participating medium, applied to the atmosphere. We note $L(x, v, s)$ the radiance of light reaching $x$ from direction
+                    $v$ when the sun is in the direction $s$, and $\mathbf{x}_o(\mathbf{x}, \mathbf{v})$ the extremity of the ray $\mathbf{x} + t\mathbf{v}$. Note that $\mathbf{x}_o$ is either on the ground or on the top of the atmosphere 
+                    boundary $r = R_t$. The transmitttance $T$ between $\mathbf{x}_o$ and $\mathbf{x}$, the radiance $\gamma$ of the reflected light at $\mathbf{x}_o$, and the radiance $\tau$ of the light scattered at $\mathbf{y}$ 
+                    in the direction $-\mathbf{v}$ are defined as follows:
+                </p>
+                <p class="block-formula">${\large{\displaystyle T(\mathbf{x}, \mathbf{x}_o) = \exp(-\int^{x_o}_{x} \sum \beta^e_i(\mathbf{y})dy)}}$<span class="inline">where ${i \in\{R,M\}}$</span> <span class="inline">(5)</span></p>
+                <p class="block-formula">${\large{\displaystyle \gamma[L](\mathbf{x}_o), s) = \frac{\alpha(\mathbf{x}_o, \mathbf{s})}{\pi} \int_{2\pi} L(\mathbf{x}_o, \omega, \mathbf{s})\omega\cdot\mathbf{n}(\mathbf{x}_o)d\omega}}$, of $0$<span class="inline">(6)</span></p>
+                <p class="block-formula">${\large{\displaystyle \tau[L](\mathbf{y}, \mathbf{v}, \mathbf{s}) = \int_{4\pi} \sum \beta^s_i(\mathbf{y})P_i(\mathbf{v}\cdot\omega)L(\mathbf{y}, \mathbf{\omega}, \mathbf{s})d\omega}}$ <span class="inline"> (7)</span></p>
+            </section>
+        </article>
+	</body>
+</html>
