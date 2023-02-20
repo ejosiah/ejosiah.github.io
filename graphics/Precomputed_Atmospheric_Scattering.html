@@ -39,7 +39,7 @@
                     ${\large{\displaystyle \beta^s_M(h, \lambda) = \beta^s_M(0, \lambda)e^{-\frac{h}{H_M}}}}$ <span class="inline">(3)</span>
                 </p>
                 <p class="block-formula">
-                    ${\large{\displaystyle P_M(\mu) = \frac{3}{8\pi}\frac{(1 - g^2)(1 + \mu^2)}{2+g^2}(1 + g^2 - 2g\mu)^{3/2}}}$ <span class="inline">(4)</span>
+                    ${\large{\displaystyle P_M(\mu) = \frac{3}{8\pi}\frac{(1 - g^2)(1 + \mu^2)}{2+g^2(1 + g^2 - 2g\mu)^{3/2}}}}$ <span class="inline">(4)</span>
                 </p>
                 <p>
                     Unline air molecules, aerosols absorb a fraction of the incident light. It is measured with an absorption coefficient $\beta^a_M$ which gives the extinction coefficient 
@@ -51,12 +51,29 @@
                 <p>
                     We recall here the rendering equation in a participating medium, applied to the atmosphere. We note $L(x, v, s)$ the radiance of light reaching $x$ from direction
                     $v$ when the sun is in the direction $s$, and $\mathbf{x}_o(\mathbf{x}, \mathbf{v})$ the extremity of the ray $\mathbf{x} + t\mathbf{v}$. Note that $\mathbf{x}_o$ is either on the ground or on the top of the atmosphere 
-                    boundary $r = R_t$. The transmitttance $T$ between $\mathbf{x}_o$ and $\mathbf{x}$, the radiance $\gamma$ of the reflected light at $\mathbf{x}_o$, and the radiance $\tau$ of the light scattered at $\mathbf{y}$ 
+                    boundary $r = R_t$. The transmitttance $T$ between $\mathbf{x}_o$ and $\mathbf{x}$, the radiance $\mathcal{I}$ of the reflected light at $\mathbf{x}_o$, and the radiance $\mathcal{J}$ of the light scattered at $\mathbf{y}$ 
                     in the direction $-\mathbf{v}$ are defined as follows:
                 </p>
                 <p class="block-formula">${\large{\displaystyle T(\mathbf{x}, \mathbf{x}_o) = \exp(-\int^{x_o}_{x} \sum \beta^e_i(\mathbf{y})dy)}}$<span class="inline">where ${i \in\{R,M\}}$</span> <span class="inline">(5)</span></p>
-                <p class="block-formula">${\large{\displaystyle \gamma[L](\mathbf{x}_o), s) = \frac{\alpha(\mathbf{x}_o, \mathbf{s})}{\pi} \int_{2\pi} L(\mathbf{x}_o, \omega, \mathbf{s})\omega\cdot\mathbf{n}(\mathbf{x}_o)d\omega}}$, of $0$<span class="inline">(6)</span></p>
-                <p class="block-formula">${\large{\displaystyle \tau[L](\mathbf{y}, \mathbf{v}, \mathbf{s}) = \int_{4\pi} \sum \beta^s_i(\mathbf{y})P_i(\mathbf{v}\cdot\omega)L(\mathbf{y}, \mathbf{\omega}, \mathbf{s})d\omega}}$ <span class="inline"> (7)</span></p>
+                <p class="block-formula">${\large{\displaystyle \mathcal{I}[L](\mathbf{x}_o), s) = \frac{\alpha(\mathbf{x}_o, \mathbf{s})}{\pi} \int_{2\pi} L(\mathbf{x}_o, \omega, \mathbf{s})\omega\cdot\mathbf{n}(\mathbf{x}_o)d\omega}}$, of $0$<span class="inline">(6)</span></p>
+                <p class="block-formula">${\large{\displaystyle \mathcal{J}[L](\mathbf{y}, \mathbf{v}, \mathbf{s}) = \int_{4\pi} \sum \beta^s_i(\mathbf{y})P_i(\mathbf{v}\cdot\omega)L(\mathbf{y}, \mathbf{\omega}, \mathbf{s})d\omega}}$ <span class="inline"> (7)</span></p>
+                <p>Not that $\mathcal{I}$ is null on the top atmosphere boundary. With these notations the rendering equation is:</p>
+                <p class="block-formula">${\large{\displaystyle L(\mathbf{x}, \mathbf{v}, \mathbf{s}) = (L_0 + \mathcal{R}[L] + \mathcal{S}[L])(\mathbf{x}, \mathbf{v}, \mathbf{s}) }}$ <span class="inline">(8)</span></p>
+                <p class="block-formula">${\large{\displaystyle L_0(\mathbf{x}, \mathbf{v}, \mathbf{s}) = T(\mathbf{x}, \mathbf{x}_o)L_{sum} }}$, or $0$ <span class="inline">(9)</span></p>  
+                <p class="block-formula">${\large{\displaystyle \mathcal{R}[L] = T(\mathbf{x}, \mathbf{x}_o)\mathcal{J}[L](\mathbf{x}_o, \mathbf{s}) }}$ <span class="inline">(10)</span></p>
+                <p class="block-formula">${\large{\displaystyle \mathcal{S}[L] = \int^{\mathbf{x}_0}_x T(\mathbf{x}, \mathbf{y})\mathcal{J}[L](\mathbf{y}, \mathbf{v}, \mathbf{s})dy }}$ <span class="inline">(11)</span></p>  
+                <ul>  
+                    <li>Where $L_0$ is the direct sunlight $L_{sun}$ attenuated before reaching $\mathbf{x}$ by $T(\mathbf{x} \mathbf{x}_o)$</li>
+                    <li>$L_0$ is null if $\mathbf{v} \neq \mathbf{s}$, or if the sun occluded by the terrain i.e., if $\mathbf{x}_o$ is on the ground.</li>
+                    <li>$\mathcal{R}[L]$ is the light reflected at $\mathbf{x}_o$ and also attenuated before reaching $\mathbf{x}$</li>
+                    <li>$\mathcal{S}[L]$ is the inscattered light, i.e., the light scattered towards $\mathbf{x}$ bewtween $\mathbf{x}$ and $\mathbf{x}_o$</li>
+                </ul>
+                <p>Full rendering equation:</p>
+                <p class="block-formula">
+                    ${\displaystyle T(\mathbf{x}, \mathbf{x}_o)L_{sum} 
+                    + T(\mathbf{x}, \mathbf{x}_o)\frac{\alpha(\mathbf{x}_o, \mathbf{s})}{\pi} \int_{2\pi} L(\mathbf{x}_o, \omega, \mathbf{s})\omega\cdot\mathbf{n}(\mathbf{x}_o)d\omega
+                    +  T(\mathbf{x}, \mathbf{x}_o)\int_{4\pi} \sum \beta^s_i(\mathbf{y})P_i(\mathbf{v}\cdot\omega)L(\mathbf{y}, \mathbf{\omega}, \mathbf{s})d\omega }$
+                </p>
             </section>
         </article>
 	</body>
