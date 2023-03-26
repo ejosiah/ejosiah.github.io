@@ -107,8 +107,34 @@
             <div class="w3-container w3-card-2 w3-white w3-margin-bottom">
                 <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Work Experience</h2>
                 <div class="w3-container">
+                    <h5 class="w3-opacity"><b>Scala Developer / (Search UI Team - HMRC)</b></h5>
+                    <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>January 2023 - <span class="w3-tag w3-teal w3-round">Current</span></h6>
+                    <p>
+                      The search UI team is responsible for developing tools that aggregate an individual's tax persona into a single point where agents can query for such individual.
+                      Below is what I'm currently working on.
+                      <ol>
+                        <li>building an injectable survey app which gets triggered on specific user action</li>
+                      </ol>   
+                    </p>
+                    <hr>
+                </div>
+                <div class="w3-container">
+                    <h5 class="w3-opacity"><b>Scala Developer / (CMQ Team - HMRC)</b></h5>
+                    <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>January 2022 - January 2023</h6>
+                    <p>The CMQ team was responsible for collecting and validating the authenticity of fraud header data from application developers integrating with HMRC services,
+                        I was contracted to build the self service web app to aid the developers visiualize their fraud header data. below are the list of things I did:
+                        <ol>
+                            <li>developed an experian like ui guage using javascript/canvas which give developers an instant visual cue as to the help of thier fraud header data</li>
+                            <li>developed as step chart which showed application developers fraud header data state over a 6 month period</li>
+                            <li>integrated CMQ fraud header data into an internal web app used by agents to carry out fraud checks</li>
+                        </ol>
+
+                    </p>
+                    <hr>
+                </div>
+                <div class="w3-container">
                     <h5 class="w3-opacity"><b>Scala Developer / (CRM team - Sky)</b></h5>
-                    <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>December 2019 - <span class="w3-tag w3-teal w3-round">Current</span></h6>
+                    <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>December 2019 - January 2022</h6>
                     <p>I Was responsible for applications which were used to integrate internal data with 3rd party solution providers, These applications where built using akka stream
                      which where connected to kafka brokers on the upstream to receive events triggered by customer actions. Once events are consumed they are run through several flows
                     where they are transformed and enriched before they are sent to our 3rd party solution providers. Below is some of the activities I was involved in:
@@ -157,7 +183,7 @@
                 </div>
                 <div class="w3-container">
                     <h5 class="w3-opacity"><b>Scala Developer / (payments - HMRC)</b></h5>
-                    <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>April 2016 - April 2018</h6>
+                    <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>January 2016 - April 2018</h6>
                     <p>
                         I was the team lead on the payments system for HMRC, this system for responsible for collecting and processing tax payments from our customers, my responsibilities included:
                         <ol>
@@ -172,9 +198,62 @@
                             </li>
                         </ol>
                     </p>
-                    <br>
+                </div>
+                <div class="w3-container">
+                    <h5 class="w3-opacity"><b>Grails Developer / (News UK)</b></h5>
+                    <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>March 2015 - January 2016</h6>
+                    <p>
+                        I was contracted to implement requirements for News UK’s Acqusition and Account Management Projects
+                        <ol>
+                            <li>Redesigned The Times acquisition website based on designs from the News UK designers.</li>
+                            <li>Redesigned The Times Account Management Portal</li>
+                            <li>Redesigned the Dream Team Fantasy Football website and developed backend code required to plug it up to various New UK internal APIs for the 2015 Fantasy Football season</li>
+                        </ol>
+                    </p>
+                </div>
+                <hr>
+                <div class="w3-container">
+                    <h5 class="w3-opacity"><b>Principal Developer / (Bitcoinpaygate)</b></h5>
+                    <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Aug 2014 - March 2015</h6>
+                    <p>Bitcoinpaygate is a startup looking to provide Bitcoin payment gateway services to companies and individuals, I was contracted as the principal developer to develop the gateway
+                        <ol>
+                            <li>The gateway uses Hazelcast for high speed messaging, mission critical data is pre-loaded into RAM at start up to avoid blocking on IO during reads, IO operations on user request threads are avoided as much as possible and are performed on a dedicated IO thread. Log4j2 was used to enable heavy logging but still preserve the application’s responsiveness; this is possible because Log4j2 uses asynchronous logging and the LMAX disruptor for none blocking concurrency</li>
+                            <li>Designed and implemented the messaging system which was based on the Enterprise integration patterns, Hazelcast was used as the conduit for transferring messages around the cluster (Although I did use GridGain at first but quickly reverted to Hazelcast as GrainGain was slightly more complex and time did not allow for its continued use</li>
+                            <li>Designed and implemented the Bitcoin client which uses JSON-RPC to connect to a bitcoind daemon which in turn connects to the Bitcoin p2p network</li>
+                            <li>Designed and implemented the Exchange which is a facade to various Bitcoin exchanges, wrote an algorithm derived in house to compute a competitive exchange rates based on the aggregation of rates from the different exchanges</li>
+                            <li>Designed and implemented the payment processor which is an implementation of the <a href="https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki">Bitcoin payment protocol BIP 0070</a></li>
+                            <li>Designed and implemented the gateway’s webservice for 3rd party integration. The gateway was built using an embedded jetty container to avoid deploying to a servlet container</li>
+                            <li>I was also responsible for devOps, configured the build server which consisted of TeamCity, Git and Sonar for code coverage, installed mongoDB, mySQL, apache2 and tomcat. Configured apache2 for virtual hosting and also configured mod_jk for forwarding requests to tomcat</li>
+                        </ol>
+                    </p>
+                </div>
+                <hr>
+                <div class="w3-container">
+                    <h5 class="w3-opacity"><b>Lead Grails Developer / (How Splendid)</b></h5>
+                    <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Feb 2014 - Aug 2014</h6>
+                    <p>Sub contracted to News UK to work on their Acquisition grails project, though a grails project 80% of project time was spend working on front end tasks requiring both JavaScript and CSS
+                        <ol>>
+                            <li>Redesigned the sun acquisition website based on designs from the News UK designers</li>
+                            <li>Created custom JavaScript controls (model dialog boxes, select, checkbox, radio box, etc.) to meet the News UK design requirements</li>
+                            <li>Redesigned the Dream Team Fantasy Football website and developed backend code required to plug it up to various New UK internal APIs for the 2014 Fantasy Football season</li>
+                        </ol>
+                    </p>
+                </div>
+                <hr>
+                <div class="w3-container">
+                    <h5 class="w3-opacity"><b>Tech Lead / GameSys</b></h5>
+                    <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Apr 2013 - Feb 2014</h6>
+                    <p>Moved to the Games Platform team which was developing Gamesys’s next generation gaming platform to help implement and mentor team members on the proper use of Agile methodologies  
+                        <ol>>
+                            <li>Took over the role of SCRUM Master for 2 iterations, introduced sprint retrospectives, showed the team the proper use of daily scrum meeting and introduced a product owner to the project</li>
+                            <li>Introduced view objects to the project as the team was previously using ACLs between every tier of the project architecture which lead to a proliferation of DTLs.</li>
+                            <li>I was also responsible for the Architecture for cross cutting concerns (exception handling, logging, etc.); which was implemented using Spring AOP</li>
+                            <li>As the project was already in progress before I joined the team; the current architecture used a scheduling framework (Quarts) for scheduling subsequent games. As a result of the decision to use scheduling, overlapping games were crippling the system and the team’s current fix was to use time offsets which still did not fix the problem. I introduced the team to the concept of using coordinators instead of scheduling; which takes the responsibility of scheduling subsequent games away from the scheduler and removes overlaps as subsequent games only start after the previous game was finished. Hazelcast was used for implementation as it comes pre-packaged with distributed locking features</li>
+                        </ol>
+                    </p>
                 </div>
             </div>
+            <br>
 
             <div class="w3-container w3-card-2 w3-white">
                 <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Education</h2>
