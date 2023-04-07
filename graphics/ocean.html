@@ -1,0 +1,157 @@
+<html>
+	<head>
+		<title>Simulating Ocean water</title>
+		<link rel="stylesheet" type="text/css" href="../../style/main.css" />
+		<script type="text/x-mathjax-config">
+  			MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+		</script>
+		<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+	</head>
+	<body>
+		<article id="main">
+            <h1>Simulating Ocean water</h1>
+            <section>
+                <h2>4 Practical Ocean Wave Algorthms</h2>
+                <section>
+                    <h3>4.1 Gerstner Waves</h3>
+                    <p>The physical model is to describe the surfacce in terms of the motion of individual points on the surface. 
+                        To a good approximation, points on the surface go through a circular motion as a wave passes by. If a point
+                        on the undisturbed surface is labelled ${\mathbf{x_0} = (x_0, y_0)}$ and the undistured height is ${y_0 = 0}$, 
+                        then as a singl wave with amplitude A passes by the point on the surface is displaced at time t to
+                    </p>
+                    <p class="block-formula">
+                        ${\mathbf{x} = \mathbf{x_0} - (\mathbf{k}/k)A\sin(\mathbf{k \cdot x_0} - \omega t)}$ <span class="inline">(26)</span>
+                    </p>
+                    <p class="block-formula">
+                        ${y = A\cos(\mathbf{k \cdot x_0 - \omega t})}$ <span class="inline">(27)</span>
+                    </p>
+                    <p>
+                        In these expressions, the vector ${\mathbf{k}}$, called the wavevector, is a horizontal vector that points in The direction of travel of the wave,
+                        and has magnitude ${k}$ related to the length of athe wave ${(\lambda)}$ by
+                    </p>
+                    <p class="block-formula">
+                        ${k = 2 \pi / \lambda}$
+                    </p>
+                    <p>
+                        Gerstner waves can be generalized to a more complex profile by summing a set of sin waves. One picks a set of wavevectors ${\mathbf{k_i}}$
+                        , amplitudes ${A_i}$, frequencies ${\omega{_i}}$ and phase ${\phi{_i}}$, for ${i = 1,...,N}$ to get the expression
+                    </p>
+                    <p class="block-formula">
+                        ${\mathbf{x} = \mathbf{x_o} - \sum_{i=1}^N (\mathbf{k_i}/k_i) A_i \sin(\mathbf{K_i \cdot x_0} - \omega{_i} t + \phi{_i}) }$ <span class="inline">(29)</span>
+                    </p>
+                    <p class="block-formula">
+                        ${y = \sum_{i=1}^N A\cos(\mathbf{k_i \cdot x_0} - \omega{_i} t + \phi{_i})}$ <span class="inline">(30)</span>
+                    </p>
+                </section> <!-- 4.1 Gerstner Waves -->
+                <section>
+                    <h3>4.2 Animating Waves: The Dispersion Relation</h3>
+                    <p>The animated behavior of Gerstner waves is determined by the set of frquencies ${\omega{_i}}$ chosen for each component.
+                        For water waves, there is a well-known relationship between these frequencies and the magnitude of their corresponding 
+                        wavevectors ${\mathbf{k}_i}$. In deep water, where the bottom may be ignore, that relationship is 
+                    </p>
+                    <p class="block-formula">
+                        ${\omega^2(k) = gk}$ <span class="inline">(31)</span>
+                    </p>
+                    <p>
+                        The parameter ${g}$ is the gravitational constant, nominally ${9.8m/sec^2}$. This dispersion relationship holds for Gerstner waves,
+                        and also for FFT-based waves. There are several conditions in which the dispersion relationship is modified. When bottom is relatively shallow
+                        compared to the length of the waves, the bottom has a retarding effect on the waves. For a bottom depth ${D}$ below the mean water level,
+                        the dispersion relation is
+                    </p>
+                    <p class="block-formula">
+                        ${\omega^2(k) = gk\tanh(kD)}$ <span class="inline">(32)</span>
+                    </p>
+                    <p>
+                        A second situation which modifies the dispersion relation is surface tension. Very small waves, with a wavelength of about 1 cm or less, have an additional term
+                    </p>
+                    <p class="block-formula">${\omega^2(k) = gk(1 + k^2L^2)}$ <span class="inline">(33)</span></p>
+                    <p>and the parameter ${L}$ has units of length. Its magnitude is the scale for the surface tension to have effect.</p>
+                    <p>
+                        Using these dispersion relationships, it is very difficult to create a sequence of frames of water surface which work for a continuous loop
+                        In order to have the sequence repeat after a certain amout of time ${T} for example, it is necessary that all frequencies be multiples of the basic frequency
+                    </p>
+                    <p class="block-formula">${\omega_0 } \equiv \frac{2 \pi}{T}$  <span class="inline">(34)</span></p>
+                    <p>
+                        However, when the wavevector ${\mathbf{k}}$ are distributed on a regular lattice, it is impossible t arrange the dispersion-generated frequencies to also be
+                        on a uniform latticewith spacing ${\omega_o}$.
+                        The solution to that is to not use the dispersion frequencies, but instead a set that is close to them For a given wavenumber ${k}$, we use the frequency
+                    </p>
+                    <p class="block-formula">
+                        ${ \bar{\omega}(k) = [[\frac{\omega (k)}{\omega_{0}}]] \omega_0 }$ <span class="inline">(35)</span>
+                    </p>
+                </section> <!-- 4.2 Animating Waves: The Dispersion Relation -->
+                <section>
+                    <h3>4.3 Statistical Wave Model and the Fourier Transform</h3>
+                    <p>
+                        The FFT based representation of a wave height field expresses the wave height ${h(\mathbf{x}, t)}$ at the horizontal position ${\mathbf{x} = (x, z)}$ as the sum 
+                        of sinusoids with complex, time dependent amplitudes:
+                    </p>
+                    <p class="block-formula">
+                        ${h(\mathbf{x}, t) = \sum{_k} \tilde{h}(\mathbf{k}, t) \exp{(i\mathbf{k \cdot x})}}$ <span class="inline">(36)</span>
+                    </p>
+                    <p>
+                        where ${t}$ is the time and ${\mathbf{k}}$ is a two-dimensional vector with components ${k = (k_x, k_z)}$, ${k_x = 2 \pi n / L_x, k_z = 2 \pi m / L_z}$ and 
+                        ${n}$ and ${m}$ are integers with bounds ${-N/2 \leq n \leq N/2 }$ and ${-M/2 \leq m \leq M/2 }$. The fft process generates the height field at discrete points 
+                        ${\mathbf{x} = (n L_x/N, m L_z /M)}$.
+                    </p>
+                    <p>
+                        The height amplitude Fourier components, ${\tilde{h} (\mathbf{k}, t)}$, determine the structure of the surface.
+                    </p>
+                    <p>
+                        The slope vector can be obtained by using more ffts:
+                    </p>
+                    <p class="block-formula">
+                        ${ \epsilon (\mathbf{x}, t) = \Delta h(\mathbf{x}, t) = \sum_k i \mathbf{k} \tilde{h}(\mathbf{k}, t) \exp(i \mathbf{k} \cdot \mathbf{x}) }$ <span class="inline">(37)</span>
+                    </p>
+                    <p>
+                        In terms of this fft representation, the finite difference approach would replace the term ${i \mathbf{k}}$ with terms proportional to
+                    </p>
+                    <p class="block-formula">
+                        ${\exp(i \mathbf{k} \cdot \mathbf{ \triangle x} ) - 1}$ <span class="inline">(38)</span>
+                    </p>
+                    <p>
+                        Statistical analysis of a number of wave-buoy, photographic and radar measurements of the ocean surface demonstrates that the wave height amplitudes ${\tilde{h} (\mathbf{k}, t)}$
+                        are nearly Statistically stationary, independent, gaussian fluctuations with a spatial spectrum denoted by
+                    </p>
+                    <p class="block-formula">
+                        ${P_h(\mathbf{k}) =  < \vert \tilde{h^*} (\mathbf{k}, t) \vert{^2} > }$ <span class="inline">(39)</span>
+                    </p>
+                    <p>
+                        A useful model for wind-driven waves larger than capillary waves in a fully developed sea is the <i>phillips</i> spectrum
+                    </p>
+                    <p class="block-formula">
+                        ${ P_h(\mathbf{k}) = A \frac{\exp(-1/(kL)^2)}{k^4} \vert \hat{\mathbf{k}} \cdot \hat{ \omega } \vert{^2}}$  <span class="inline">(40)</span>
+                    </p>
+                    <p>
+                        where ${L = V^2 / g}$ is the largest possible waves arising from a continuous wind of speed ${V}$, ${g}$ is the gravitational constant and ${\hat{ \omega }}$ is the direction of the wind.
+                        The cosine term ${ \vert \mathbf{ \hat{k} } \cdot \hat{ \omega } \vert{^2}}$ in the Phillips spectrum eliminates waves that move perperndicular to the wind direction.
+                        This model, while relatively simple, has poor convergence properties at high values of the wavenumber ${ \vert \mathbf{k} \vert }$. A simple fix is to suppress waves smaller than a small 
+                        length ${l \ll L}$, and modify the phillips spectrum by the multiplicative factor
+                    </p>
+                    <p class="block-formula">
+                        ${\exp(-k^2 l^2) }$ <span class="inline">(41)</span>
+                    </p>
+                </section> <!-- 4.3 Statistical Wave Model and the Fourier Transform -->
+                <section>
+                    <h3>Building a Random Ocean Wave Height Field</h3>
+                    <p>
+                        Realization of water wave height fields are created from the principles elaborated up to this point: gaussian random numbers with spatial spectra of a prescribed form. 
+                        This is most efficiently accomplished directly in the fourier domain. The fourier amplitudes of a wave height field can be produced as 
+                    </p>
+                    <p class="block-formula">
+                        ${ \tilde{h_0} = \frac{1}{\sqrt{2}} (\xi{_r} + i \xi{_k}) \sqrt{P_h(\mathbf{k})} }$ <span class="inline">(42)</span>
+                    </p>
+                    <p>
+                        where ${\xi{_r} ~ and ~ \xi{_i}}$ are ordinary indepenedent draws from a gaussian random number generator, with mean 0 and standard deviation 1.
+                    </p>
+                    <p>
+                        Given a dispersion relation ${ \omega (k)}$, the Fourier amplitudes of the wave field realization at time ${t} are 
+                    </p>
+                    <p class="block-formula">
+                        ${ \tilde{h} (\mathbf{k}, t) = \tilde{h_0}(\mathbf{k}) \exp \{ i \omega (k) t \}  + \tilde{h_0^*}(-\mathbf{k}) \exp \{ -i \omega (k) t \} }$ <span class="inline">(43)</span>
+                    </p>
+                </section> <!-- Building a Random Ocean Wave Height Field -->
+            </section> <!-- 4 Practical Ocean Wave Algorthms -->
+        </article>
+    </body>
+</html>
