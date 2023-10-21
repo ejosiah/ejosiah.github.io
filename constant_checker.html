@@ -1,0 +1,99 @@
+<html>
+    <head>
+        <title>Constants checker</title>
+        <style>
+            #result .err{
+                color: red;
+            }
+            #result .exp{
+                color: greenyellow;
+            }
+            #result div{
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: x-large;
+                font-weight: bold;
+                text-align: center;
+            }
+        </style>
+        <script>
+            const setup = key => {
+                const CONTANT = constants[key].value;
+
+                document.querySelector('#checker').onsubmit = function(){
+                    const constant = document.querySelector('#user_constant').value;
+
+                    let errors = [];
+                    for(let i = 0; i < constant.length; i++){
+                        if(constant[i] == CONTANT[i]){
+                            errors.push(0);
+                        }else{
+                            errors.push(1);
+                        }
+                    }
+                    
+                    let actual = "";
+                    let expected = "";
+                    for(i = 0; i < constant.length; i++){
+                        if(errors[i] === 1){
+                            actual += "<span class='err'>" + constant[i] + "</span>"
+                            expected += "<span class='exp'>" + CONTANT[i] + "</span>"
+                        }else{
+                            actual += "<span>" + constant[i] + "</span>"
+                            expected += "<span>" + CONTANT[i] + "</span>"
+                        }
+                        
+                    }
+                    let result = document.querySelector("#result");
+                    
+                    result.innerHTML = "<div>" + actual + "</div>";
+                    
+                    let hasErrors = errors.reduce((acc, val) => acc + val) > 0;
+                    if(hasErrors){
+                        result.innerHTML += "<div>" + expected + "</div>";
+                    }
+                    return false;
+                };
+
+                const label = constants[key].label;
+                document.querySelector('#clabel').innerText = `input ${label}; to however many decimal places, press check to confirm`
+            }
+
+            window.constants = {
+                PI : { label: '\u03C0', value: "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679"},
+                TWO_PI : { label: '2\u03C0', value: "6.2831853071795864769252867665590057683943387987502116419498891846156328125724179972560696506842341358" },
+                EXP : { label : 'e', value: "2.7182818284590452353602874713527"}
+            }
+            window.onload = function(){
+                const key = document.querySelector('input[name=constant][checked]').value;
+                setup(key);
+                
+                document.querySelector("#clear").onclick = function(){
+                    document.querySelector('#user_constant').value = "";
+                    document.querySelector("#result").innerHTML = ""
+                    return false;
+                }
+
+                Array.from(document.querySelectorAll('input[name=constant]'))
+                    .forEach(_ => _.addEventListener('change', e => setup(e.target.value) ));
+
+            };
+        </script>
+    </head>
+    <body>
+        <h1>Math Constant checker</h1>
+        <p id="clabel"></p>
+        <form id="checker" autocomplete="off">
+            <input id="user_constant" type="text" size="50" />
+            <input type="submit" value="check" />
+            <input type="submit" value="clear" id="clear" />
+            <div>
+               <input name="constant" type="radio" value="PI" checked/> <label>&pi;</label>
+               <input name="constant" type="radio" value="TWO_PI" id="two_pi"/> <label>2&pi;</label>
+               <input name="constant" type="radio" value="EXP" /> <label>e</label>
+            </div>
+        </form>
+        <div id="result">
+
+        </div>
+    </body>
+</html>
