@@ -1,0 +1,148 @@
+<html>
+    <head>
+        <title>Global Illumination using Photon Mapping</title>
+		<link rel="stylesheet" type="text/css" href="../../style/main.css" />
+		<script type="text/x-mathjax-config">
+  			MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+		</script>
+		<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+	
+    </head>
+    <body>
+        <article id="main">
+            <h1>Global Illumination using Photon Mapping</h1>
+            <section>
+                <h2>Photon tracing</h2>
+                <p>
+                    The purpose of the photon tracing pass is to compute indirect illumination on diffuse surfaces.
+                    This is done by emitting photons from the light sources, tracing them through the scene, and storing them at diffuse surfaces
+                </p>
+                <section>
+                    <h3>Photon emission</h3>
+                    <p>
+                        The power ("wattage") of the light source has to be distributed among the photons emitted from it.
+                        If the power of the light is <span>${P_{light}}$</span> and the number of emitted photons is ${\eta_{e}}$,
+                        the power of each emitted photon is
+                    </p>
+                    <p class="block-formula">
+                        ${\LARGE{ P_{photon} = \frac{P_{\textit{light}}}{\eta_{e}} }}$ <span class="inline">(1)</span>
+                    </p>
+                    <section>
+                        <h4>Mutiple lights</h3>
+                        <p>If the scene contains multiple light sources, photons should be emitted from each light source.
+                            More photons should be emitted from brighter ligths than from dim lights
+                        </p>
+                    </section>
+                    <section>
+                        <h4>Projection maps</h3>
+                        <p>In scenes with sparse geometry, many emitted photons will not hit any objects.
+                            Emitting these photons is a waste of time. To optimize the emission, <i>projection maps</i> can be used.
+                            A projection map is simply a map of the geometry as seen from the light source.
+                        </p>
+                        <p class="block-formula">
+                            ${\LARGE{ P_{photon} = \frac{P_{\textit{light}}}{\eta_{e}} \frac{cells_{objects}}{cells_{total}} }}$ <span class="inline">(2)</span>
+                        </p>
+                    </section>
+                </section>
+                <section>
+                    <h3>Photon tracing</h3>
+                    <p>When a photon hits an object, it can either be reflected, transmitted, or absorbed, based on the 
+                        material parameters of the surface. To decide whether to reflect, transmit or absorbe, Russian roulette is used.
+                    </p>
+                    <section>
+                        <h4>Reflection, transmission, or absorption?</h4>
+                        <p>for a monochromatic simulation, given a reflective surface with diffuse flection coefficient ${d}$
+                            and specular reflection coefficient ${s}$ with (with ${d + s \leq 1}$), using a random variable ${ \xi \in [0, 1] }$
+                            <p class="block-formula">
+                                ${\large{ \xi \in [0, d]} \longrightarrow}$ <span>diffuse reflection</span>
+                            </p>
+                            <p class="block-formula">
+                                ${\large{ \xi \in [d, s + d]} \longrightarrow}$ <span>specular reflection</span>
+                            </p>
+                            <p class="block-formula">
+                                ${\large{ \xi \in [s + d, 1]} \longrightarrow}$ <span>absorption</span>
+                            </p>
+                            With more color bands (for example RGB colors), The probabilities for specular and diffuse reflection
+                            can be based on the total energy reflected by each type of reflection or on the maximumum energy reflected
+                            in any color band. using the maximum energy, probability for reflection is 
+                            <p class="block-formula">
+                                ${\large{ P_r = max(d_r + s_r, d_g + s_g, d_b + s_b)}}$
+                            </p>
+                            where ${d_r}$, ${d_g}$, and ${d_b}$ are the diffuse reflection coefficients in the red, green, and blue color bands,
+                            and ${s_r}$ ${s_g}$, and ${s_b}$ are the specular reflection coefficients in the red, green, and blue color bands.
+                            (The probability of absorption is ${P_a = 1 = P_r}$) With this the probability ${P_d} of diffuse reflection is:
+                            <P class="block-formula">
+                                ${\LARGE{P_d = \frac{ d_r + d_g + d_b }{ d_r + d_g + d_b + s_r + s_g + s_b} P_r }}$
+                            </P>
+                            Similarly, for the probability ${P_s}$ of specular reflection:
+                            <p class="block-formula">
+                                ${\LARGE{P_s = \frac{ s_r + s_g + s_b }{ d_r + d_g + d_b + s_r + s_g + s_b} P_r = P_r - P_d }}$
+                            </p>
+                            With these probabilities, the decision of which type of reflection or absorption should be chosen takes the following form 
+                            <p class="block-formula">
+                                ${\large{ \xi \in [0, P_d]} \longrightarrow}$ <span>diffuse reflection</span>
+                            </p>
+                            <p class="block-formula">
+                                ${\large{ \xi \in [P_d, P_s + P_d]} \longrightarrow}$ <span>specular reflection</span>
+                            </p>
+                            <p class="block-formula">
+                                ${\large{ \xi \in [P_s + P_d, 1]} \longrightarrow}$ <span>absorption</span>
+                            </p>
+                            The power of the reflected photon needs to be adjusted to account for the probability of survival.
+                            specualer reflection example:
+                            <p class="block-formula">
+                                ${\large{ P_{refl,r} = P_{inc,r} \frac{s_r}{P_s} }}$
+                            </p>
+                            <p class="block-formula">
+                                ${\large{ P_{refl,g} = P_{inc,g} \frac{s_g}{P_s} }}$
+                            </p>
+                            <p class="block-formula">
+                                ${\large{ P_{refl,b} = P_{inc,b} \frac{s_b}{P_s} }}$
+                            </p>
+                            where ${P_{inc}}$ is the power of the incident photon
+                        </p>
+                    </section>
+                </section>
+            </section>
+            <section>
+                <h2>Radiance estimate</h2>
+                <section>
+                    <h3>Radiance estimate at a surface</h3>
+                    <p>
+                        The photon map can be seen as a representation of the incoming flux; to compute radiance we need to
+                        integrate this information. This can be done using the expression for reflected radiance:
+                        <p class="block-formula">
+                            ${\large{ \displaystyle L_{r}(x, \vec{\omega}) = \int_{\Omega_{x}} f_r(x, \vec{\omega}', \vec{\omega}) L_{i}(x, \vec{\omega}') | \vec{n_x} \cdot \vec{\omega}' |d\omega_i' }}$ <span class="inline">(3)</span>
+                        </p>
+                        where ${L_r}$ is the reflected radiance at ${x}$ in the direction ${\vec{\omega}}$. ${\Omega_x}$ is the (hemi)sphere 
+                        of the incoming direction, ${f_r}$ is the BRDF at ${x}$ and ${L_i}$ is the incoming radiance.
+                        Since the photon map provides information about the incoming flux we need to rewrite this term. This
+                        can be done using the relationship between radiance and flux:
+                        <p class="block-formula">
+                            ${\large{ \displaystyle L_i(x, \vec{\omega}') = \frac{d^2 \Phi_i(x, \vec{\omega}')}{ \cos \theta_i d\omega_i' dA_i } } }$ <span class="inline">(4)</span>
+                        </p>
+
+                        and we can rewrite the integral as 
+                        <p class="block-formula">
+                            ${\large{ \displaystyle L_{r}(x, \vec{\omega}) = \int_{\Omega_{x}} f_r(x, \vec{\omega}', \vec{\omega}) \frac{d^2 \Phi_i(x, \vec{\omega}')}{ \cos \theta_i d\omega_i' dA_i } | \vec{n_x} \cdot \vec{\omega}' |d\omega_i' }}$ <span class="inline">(5)</span>
+                        </p>
+                        The incoming flux ${\Phi_i}$ is approximated using the photon map by locating the ${n}$ photons that have the shortest distance to x.
+                        Each photon ${p}$ has the power ${\displaystyle \Delta \Phi_p(\vec{\omega_p})}$ and by assuming that the photons intersects the surface at x we obtain
+                        <p class="block-formula">
+                            ${\large \displaystyle L_r(x, \vec{\omega}) \approx \Sigma_{p=1}^{n} f_r(x, \vec{\omega_p}, \vec{\omega}) \frac{\Delta \Phi_p(x, \vec{\omega_p})}{\Delta A} }$ <span class="inline">(6)</span>
+                        </p>
+                        By assuming that the surface is locally flat around x then 
+                        <p class="block-formula">
+                            ${\large \displaystyle \Delta A = \pi r^2}$ <span class="inline">(7)</span>
+                        </p>
+                        where ${r}$ is the radius of the sphere. ie. the largest distance between ${x}$ and each of the photons
+                        This results in the following equation for computing the reflected radiance at a surface using the photon map 
+                        <p class="block-formula">
+                            ${\large \displaystyle  L_r(x, \vec{\omega}) \approx \frac{1}{\pi r^2} \Sigma_{p=1}^{n} f_r(x, \vec{\omega_p}, \vec{\omega}) \Delta \Phi_p(x, \vec{\omega_p}) }$ <span class="inline">(7)</span>
+                        </p>
+                    </p>
+                </section>
+            </section>
+        </article>
+    </body>
+</html>
