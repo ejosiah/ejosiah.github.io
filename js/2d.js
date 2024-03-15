@@ -165,6 +165,25 @@ class Circle {
     }
 }
 
+class Triangle{
+    constructor(a, b, c) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.edges = [
+            new Line(a, b),
+            new Line(a, c),
+            new Line(b, c)
+        ]
+    }
+
+    draw(ctx){
+        for(edge of this.edges) {
+            edge.draw(ctx);
+        }
+    }
+}
+
 function findIntersection(line1, line2) {
 	const x1 = line1.a.x;
     const y1 = line1.a.y;

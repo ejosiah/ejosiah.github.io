@@ -1,0 +1,33 @@
+<htm>
+    <head>
+        <title>playground</title>
+        <script type="text/javascript" src="js/2d.js"></script>
+        <script type="text/javascript" src="js/incribe_circle.js"></script>
+        <style>
+            canvas {
+               border: 1px solid gray;
+               margin-bottom: 1em;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="my-canvas" width=1024 height=1024></canvas>
+        <form>
+            <fieldset>
+                <legend>Starting Shape</legend>
+                <span class="">
+                    <input name="starting_shape" type="radio" value="triangle" id="triangle" checked>
+                    <label class="" for="triangle" >
+                        Triangle
+                    </label>
+                </span>
+                <span class="">
+                    <input name="starting_shape" type="radio" value="circle" id="circle">
+                    <label class="" for="circle" >
+                        Circle
+                    </label>
+                </span>
+            </fieldset>
+        </form>
+    </body>
+</htm>
